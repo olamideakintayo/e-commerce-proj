@@ -48,10 +48,4 @@ class Products {
       console.log(error);
     }
   }
-}
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> features/dark-white-mode
