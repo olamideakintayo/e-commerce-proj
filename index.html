@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="color-scheme" content="dark light">
+    <!-- Tailwind Css link file-->
+    <link rel="stylesheet" href="./css/main.css" />
+    <!-- Favicon link-->
+    <link rel="icon" type="image/png" href="images/favicon.png"/>
+    <!-- Css Animation link-->
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+    <!-- Font awesome-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+    />
+    <!-- Custom Css-->
+    <link rel="stylesheet" href="./style.css">
+    <title>Olamide's E-Commerce Proj</title>
+  </head>
+  <body class="font-body overflow-x-hidden">
+  <!-- Navbar -->
+  <nav class="navbar flex items-center sticky top-0">
+    <div class="navbar-center flex self-center justify-between m-auto">
+        <span class="nav-icon">
+          <button onclick="darkMode()">
+            <i class="fa-solid fa-circle-half-stroke"></i>
+          </button>
+        </span>
+        <img src="./images/logo.svg" alt="Store logo" />
+        <div class="cart-btn relative cursor-pointer">
+            <span class="nav-icon">
+                <i class="fas fa-cart-plus"></i>
+            </span>
+            <div class="cart-items absolute bg-brightRed">0</div>
+        </div>
+    </div>
+  </nav>
+  <!-- End of Navbar -->
+  <!-- Hero Section-->
+  <header class="hero flex justify-center items-center">
+   <div class="banner inline-block text-center animate__animated animate__bounceInLeft">
+    <h1 class="banner-title  flex font-body uppercase text-black">Kash Collections</h1>
+    <a href="#product">
+    <button class="banner-btn uppercase cursor-pointer font-body  bg-brightRed">Shop Now</button> 
+  </a>
+   </div>
+  </header>
+  <!--End of Hero Section -->
+  <!-- products -->
+  <section class="products font-body" id="product">
+    <div class="section-title text-center capitalize">
+      <h2 class="text-center capitalize animate__animated animate__flipInX animate__delay-2s animte__duration-3">our products</h2>
+    </div>
+    <div class="products-center grid m-auto">
+
+    </div>
+  </section>
+  <!-- End of products -->
+  <!-- Cart -->
+  <div class="cart-overlay fixed top-0 right-0">
+   <div class="cart fixed top-0 right-0 overflow-scroll">
+    <span class="close-cart">
+      <i class="fas fa-window-close"></i>
+    </span>
+    <h2 class="text-center capitalize text-black">your cart</h2>
+   <div class="cart-content">
+    <!-- Cart Items -->
+    <!-- <div class="cart-item">
+    </div> -->
+    <!-- End Of Cart Items -->
+   </div>
+   <div class="cart-footer self-center">
+    <h3 class="capitalize text-black">your total : $ <span class="cart-total">0</span></h3>
+   <a id="check">
+    <button class="checkout-cart banner-btn uppercase cursor-pointer font-body border-solid border-brightRed bg-brightRed self-center">check out</button>
+   </a>
+   </div>
+  </div>
+  </div>
+  <!-- End of Cart -->
+    <script src="./app.js"></script>
+  </body>
+</html>

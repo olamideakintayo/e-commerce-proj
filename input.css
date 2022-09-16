@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+:root {
+  --primaryColor: #f09d51;
+  --mainWhite: #fff;
+  --mainBlack: #222;
+  --mainGrey: #ececec;
+  --mainSpacing: 0.1rem;
+  --mainTransition: all 0.3s linear;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: static;
+}
+body {
+  color: var(--mainBlack);
+  background: var(--mainWhite);
+  
+}
+
+/* --------------- Navbar ---------------- */
+.navbar {
+    height: 60px;
+    width: 100%;
+    background: rgb(231, 226, 221);
+    z-index: 1;
+  }
+  .navbar-center {
+    width: 100%;
+    max-width: 1170px;
+    padding: 0 1.5rem;
+  }
+  .nav-icon {
+    font-size: 1.5rem;
+  }
+
+  .cart-items {
+    top: -8px;
+    right: -8px;
+    padding: 0 5px;
+    border-radius: 30%;
+    color: var(--mainWhite);
+  }
+  /* --------------- End of Navbar ---------------- */
+  
+  /* --------------- Hero Section---------------- */
+  .banner {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 2rem;
+  }
+
+  .banner-title {
+    font-size: 3.4rem;
+    letter-spacing: var(--mainSpacing);
+    margin-bottom: 3rem;
+  }
+  .banner-btn {
+    padding: 1rem 3rem;
+    letter-spacing: var(--mainSpacing);
+    font-size: 1rem;
+    color: var(--mainBlack);
+    border: 1px solid var(--primaryColor);
+    transition: var(--mainTransition);
+  }
+  .banner-btn:hover {
+    background: transparent;
+    color: var(--primaryColor);
+  }
+  /* --------------- End of Hero Section---------------- */
+ /* --------------- Products ---------------- */
+
+.products {
+  padding: 4rem 0;
+}
+.section-title h2 {
+  font-size: 2.5rem;
+  margin-bottom: 5rem;
+  letter-spacing: var(--mainSpacing);
+}
+.products-center {
+  width: 90vw;
+  max-width: 1170px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-column-gap: 1.5rem;
+  grid-row-gap: 2rem;
+}
+#img-container {
+  position: relative;
+  overflow: hidden;
+}
+.bag-btn {
+  top: 70%;
+  right: 0;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  letter-spacing: var(--mainSpacing);
+  font-weight: bold;
+  transition: var(--mainTransition);
+  transform: translateX(101%);
+}
+.bag-btn:hover {
+  color: var(--mainWhite);
+}
+.fa-shopping-cart {
+  margin-right: 0.5rem;
+}
+#img-container:hover .bag-btn {
+  transform: translateX(0);
+}
+#product-img {
+  width: 100%;
+  min-height: 12rem;
+  transition: var(--mainTransition);
+}
+
+#img-container:hover #product-img {
+  opacity: 0.5;
+}
+
+.product h3 {
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  letter-spacing: var(--mainSpacing);
+}
+
+.product h4 {
+  margin-top: 0.7rem;
+  letter-spacing: var(--mainSpacing);
+  color: var(--primaryColor);
+}
+/* ---------------End of Products ---------------- */
+/* --------------- Cart ---------------- */
+.cart-overlay {
+  width: 100%;
+  height: 100%;
+  transition: var(--mainTransition);
+  background: rgb(240, 157, 81, 0.5);
+  z-index: 2;
+   visibility: hidden;
+}
+.cart {
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  background: rgb(231, 226, 221);
+  padding: 1.5rem;
+  transition: var(--mainTransition);
+   transform: translateX(100%); 
+}
+.showCart {
+  transform: translateX(0);
+}
+.transparentBcg {
+  visibility: visible;
+}
+@media screen and (min-width: 768px) {
+  .cart {
+    width: 30vw;
+    min-width: 450px;
+  }
+}
+
+.close-cart {
+  font-size: 1.7rem;
+  cursor: pointer;
+}
+.cart h2 {
+  text-transform: capitalize;
+  text-align: center;
+  letter-spacing: var(--mainSpacing);
+  margin-bottom: 2rem;
+}
+/*---------- Cart Item -------------------- */
+.cart-item {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto 1fr auto;
+  grid-column-gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+.cart-item img {
+  width: 75px;
+  height: 75px;
+}
+.cart-item h4 {
+  font-size: 0.85rem;
+  letter-spacing: var(--mainSpacing);
+}
+.cart-item h5 {
+  margin: 0.5rem 0;
+  letter-spacing: var(--mainSpacing);
+}
+.item-amount {
+  text-align: center;
+}
+.remove-item {
+  color: grey;
+
+}
+.fa-chevron-up,
+.fa-chevron-down {
+  color: var(--primaryColor);
+
+}
+/*---------- End of Cart Item -------------------- */
+
+.cart-footer {
+  margin-top: 2rem;
+  letter-spacing: var(--mainSpacing);
+  text-align: center;
+}
+.cart-footer h3 {
+  text-transform: capitalize;
+  margin-bottom: 1rem;
+}
+
+/* --------------- End of Cart ---------------- */
+
+/* --------------- Soldout Image -------------- */
+
+.soldout{
+  top : 25%;
+  font-size: 40px;
+  position: absolute;
+  left: 23%;
+  transform: rotate(-45deg);
+}
+
+.soldout-image {
+  opacity: 0.5;
+  height: 12rem;
+}
