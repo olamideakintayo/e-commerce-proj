@@ -9,6 +9,19 @@ const cartTotal = document.querySelector(".cart-total");
 const cartContent = document.querySelector(".cart-content");
 const productsDom = document.querySelector(".products-center");
 
+
+ //for the dark/light mode
+ function darkMode() {
+  if (document.body.style.backgroundColor == "black") {
+    document.body.style.backgroundColor = "white";
+    document.body.style.color = "black";
+  } else {
+    document.body.style.backgroundColor = "black";
+    document.body.style.color = "white";
+  }
+} 
+
+
 // for the cart
 
 let cart = [];
@@ -37,3 +50,8 @@ class Products {
   }
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> features/dark-white-mode
