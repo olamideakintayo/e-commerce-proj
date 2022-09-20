@@ -10,8 +10,8 @@ const cartContent = document.querySelector(".cart-content");
 const productsDom = document.querySelector(".products-center");
 
 
-//for the dark/light mode
-function darkMode() {
+ //for the dark/light mode
+ function darkMode() {
   if (document.body.style.backgroundColor == "black") {
     document.body.style.backgroundColor = "white";
     document.body.style.color = "black";
@@ -19,7 +19,9 @@ function darkMode() {
     document.body.style.backgroundColor = "black";
     document.body.style.color = "white";
   }
-}
+} 
+
+
 
 // for the cart
 
@@ -79,6 +81,8 @@ class UI {
         </article>
         <!-- end of single product-->
         `;
+
+
         //Else Statement returning the Available Products
      } else{
         result += `
@@ -109,6 +113,9 @@ class UI {
     );
     productsDom.innerHTML = result;
   }
+
+
+  //the button add to cart to display the products to the cart by the ID.
   getBagButtons() {
     const buttons = [...document.querySelectorAll(".bag-btn")];
     buttonsDOM = buttons;
@@ -137,6 +144,8 @@ class UI {
       });
     });
   }
+
+  //set cart values plus the Checkout functions.
   setCartValues(cart) {
     let tempTotal = 0;
     let itemsTotal = 0;
@@ -146,7 +155,7 @@ class UI {
     cart.map((item) => {
       tempTotal += item.price * item.amount;
      itemsTotal += item.amount;
-     //for displaying the amount of items and total price.
+     //for displaying the amount of items and total price in the checkout chat.
      linkValue += item.amount + ' ' + item.title + ', ';
     });
     cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
@@ -244,6 +253,8 @@ class UI {
   // }
   // this.hideCart();
   //}
+
+  //to remove the items from the cart doing that with their ID.
   removeItem(id) {
     cart = cart.filter((item) => item.id !== id);
     this.setCartValues(cart);
@@ -285,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // To setup the products to load in cart
   ui.setupAPP();
 
-  //get all products
+  //get all products to the local storage.
   products
     .getProducts()
     .then((products) => {
