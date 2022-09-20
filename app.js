@@ -23,7 +23,6 @@ const productsDom = document.querySelector(".products-center");
 
 
 
-
 // for the cart
 
 let cart = [];
@@ -52,5 +51,68 @@ class Products {
   }
 }
 
+//to display the products
+
+class UI {
+  displayProducts(products) {
+    let result = "";
+    products.forEach((product) => {
+       //If Statement displaying the Soldout Items
+        if(product.soldout == true) {
+        console.log('soldout');
+        result += `
+        <!-- single product -->
+        <article class="product relative">
+          <div id="img-container">
+            <img
+            src=${product.image}
+            class="block relative soldout-image" />
+
+          </div>
+          <div class="soldout">
+          Soldout
+          </div>
+          <h3 class="capitalize text-center">
+          ${product.title} 
+          </h3>
+          <h4 class="text-center">
+          $${product.price}
+          </h4>
+        </article>
+        <!-- end of single product-->
+        `;
+
+        
+        //Else Statement returning the Available Products
+     } else{
+        result += `
+        <!-- single product -->
+        <article class="product">
+          <div id="img-container">
+            <img
+            src=${product.image}
+            id="product-img"
+            class="block " />
+            <button class="bag-btn absolute bg-brightRed right-0 border-none uppercase font-bold cursor-pointer text-black" data-id=${product.id}>
+              <i class="fas fa-shopping-cart"></i>
+              add to cart
+            </button>
+          </div>
+          <h3 class="capitalize text-center">
+          ${product.title} 
+          </h3>
+          <h4 class="text-center">
+          $${product.price}
+          </h4>
+        </article>
+        <!-- end of single product-->
+        `;
+     }
+      
+    }
+    );
+    productsDom.innerHTML = result;
+  }
+}
 
 
