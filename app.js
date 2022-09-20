@@ -22,7 +22,6 @@ const productsDom = document.querySelector(".products-center");
 } 
 
 
-
 // for the cart
 
 let cart = [];
@@ -50,102 +49,97 @@ class Products {
     }
   }
 }
+   //to display the products
 
-//to display the products
-
-class UI {
-  displayProducts(products) {
-    let result = "";
-    products.forEach((product) => {
-       //If Statement displaying the Soldout Items
-        if(product.soldout == true) {
-        console.log('soldout');
-        result += `
-        <!-- single product -->
-        <article class="product relative">
-          <div id="img-container">
-            <img
-            src=${product.image}
-            class="block relative soldout-image" />
-
-          </div>
-          <div class="soldout">
-          Soldout
-          </div>
-          <h3 class="capitalize text-center">
-          ${product.title} 
-          </h3>
-          <h4 class="text-center">
-          $${product.price}
-          </h4>
-        </article>
-        <!-- end of single product-->
-        `;
-
-
-        //Else Statement returning the Available Products
-     } else{
-        result += `
-        <!-- single product -->
-        <article class="product">
-          <div id="img-container">
-            <img
-            src=${product.image}
-            id="product-img"
-            class="block " />
-            <button class="bag-btn absolute bg-brightRed right-0 border-none uppercase font-bold cursor-pointer text-black" data-id=${product.id}>
-              <i class="fas fa-shopping-cart"></i>
-              add to cart
-            </button>
-          </div>
-          <h3 class="capitalize text-center">
-          ${product.title} 
-          </h3>
-          <h4 class="text-center">
-          $${product.price}
-          </h4>
-        </article>
-        <!-- end of single product-->
-        `;
-     }
-      
-    }
-    );
-    productsDom.innerHTML = result;
-  }
-
-
-  //the button add to cart to display the products to the cart by the ID.
-  getBagButtons() {
-    const buttons = [...document.querySelectorAll(".bag-btn")];
-    buttonsDOM = buttons;
-    buttons.forEach((button) => {
-      let id = button.dataset.id;
-      let inCart = cart.find((item) => item.id === id);
-      if (inCart) {
-        button.innerText = "In Cart";
-        button.disabled = true;
+   class UI {
+    displayProducts(products) {
+      let result = "";
+      products.forEach((product) => {
+         //If Statement displaying the Soldout Items
+          if(product.soldout == true) {
+          console.log('soldout');
+          result += `
+          <!-- single product -->
+          <article class="product relative">
+            <div id="img-container">
+              <img
+              src=${product.image}
+              class="block relative soldout-image" />
+  
+            </div>
+            <div class="soldout">
+            Soldout
+            </div>
+            <h3 class="capitalize text-center">
+            ${product.title} 
+            </h3>
+            <h4 class="text-center">
+            $${product.price}
+            </h4>
+          </article>
+          <!-- end of single product-->
+          `;
+          //Else Statement returning the Available Products
+       } else{
+          result += `
+          <!-- single product -->
+          <article class="product">
+            <div id="img-container">
+              <img
+              src=${product.image}
+              id="product-img"
+              class="block " />
+              <button class="bag-btn absolute bg-brightRed right-0 border-none uppercase font-bold cursor-pointer text-black" data-id=${product.id}>
+                <i class="fas fa-shopping-cart"></i>
+                add to cart
+              </button>
+            </div>
+            <h3 class="capitalize text-center">
+            ${product.title} 
+            </h3>
+            <h4 class="text-center">
+            $${product.price}
+            </h4>
+          </article>
+          <!-- end of single product-->
+          `;
+       }
+        
       }
-      button.addEventListener("click", (event) => {
-        event.target.innerText = "In Cart";
-        event.target.disabled = true;
-        //to get product from products based on the ID we are getting from the button.
-        let cartItem = { ...Storage.getProduct(id), amount: 1 };
-        //Then we add the product to the cart when being; click add to cart.
-        cart = [...cart, cartItem];
-        //Then we save the cart in the local storage.
-        Storage.saveCart(cart);
-        //Then we set cart value.
-        this.setCartValues(cart);
-        //Then we display cart items when added to cart
-        this.addCartItems(cartItem);
-        //Then we show the cart to see our items added
-        this.showCart();
+      );
+      productsDom.innerHTML = result;
+    }
+    
+    getBagButtons() {
+      const buttons = [...document.querySelectorAll(".bag-btn")];
+      buttonsDOM = buttons;
+      buttons.forEach((button) => {
+        let id = button.dataset.id;
+        let inCart = cart.find((item) => item.id === id);
+        if (inCart) {
+          button.innerText = "In Cart";
+          button.disabled = true;
+        }
+        button.addEventListener("click", (event) => {
+          event.target.innerText = "In Cart";
+          event.target.disabled = true;
+          //to get product from products based on the ID we are getting from the button.
+          let cartItem = { ...Storage.getProduct(id), amount: 1 };
+          //Then we add the product to the cart when being; click add to cart.
+          cart = [...cart, cartItem];
+          //Then we save the cart in the local storage.
+          Storage.saveCart(cart);
+          //Then we set cart value.
+          this.setCartValues(cart);
+          //Then we display cart items when added to cart
+          this.addCartItems(cartItem);
+          //Then we show the cart to see our items added
+          this.showCart();
+        });
       });
-    });
-  }
+    }
 
-  //set cart values plus the Checkout functions.
+    //set cart values plus the Checkout functions.
   setCartValues(cart) {
     let tempTotal = 0;
     let itemsTotal = 0;
