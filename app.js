@@ -109,6 +109,7 @@ class Products {
       );
       productsDom.innerHTML = result;
     }
+    
     getBagButtons() {
       const buttons = [...document.querySelectorAll(".bag-btn")];
       buttonsDOM = buttons;
@@ -137,38 +138,167 @@ class Products {
         });
       });
     }
-    setCartValues(cart) {
-      let tempTotal = 0;
-      let itemsTotal = 0;
-      //for the whatsapp checkout link
-      let linkValue = `https://wa.me/+2349032592825?text=I%20will%20like%20to%20place%20an%20order%20of%20`;
-      //when you click on the add to cart it will display the total price in the cart after adding them up.
-      cart.map((item) => {
-        tempTotal += item.price * item.amount;
-       itemsTotal += item.amount;
-       //for displaying the amount of items and total price.
-       linkValue += item.amount + ' ' + item.title + ', ';
-      });
-      cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
-      cartItems.innerText = itemsTotal;
-      //to create href attributes to display the link contents and items total price rounded up to 2.
-      document.getElementById("check").href= linkValue + 'Total Price:$' + parseFloat(tempTotal.toFixed(2));
-    }
-    addCartItems(item) {
-      const div = document.createElement("div");
-      div.classList.add("cart-item");
-      div.innerHTML = `<img src=${item.image} alt="product" />
-          <div class="text-black">
-            <h4 class="capitalize">${item.title}</h4>
-            <h5>$${item.price}</h5>
-            <span class="remove-item cursor-pointer" data-id = ${item.id}>remove</span>
-          </div>
-          <div class="text-black"> 
-          <i class="fas fa-chevron-up cursor-pointer" data-id= ${item.id}></i>
-          <p class="item-amount self-center">${item.amount}</p>
-          <i class="fas fa-chevron-down cursor-pointer" data-id= ${item.id}></i>
-        </div>
-        `; 
-      cartContent.appendChild(div);
-    }
+
+    //set cart values plus the Checkout functions.
+  setCartValues(cart) {
+    let tempTotal = 0;
+    let itemsTotal = 0;
+    //for the whatsapp checkout link
+    let linkValue = `https://wa.me/+2349032592825?text=I%20will%20like%20to%20place%20an%20order%20of%20`;
+    //when you click on the add to cart it will display the total price in the cart after adding them up.
+    cart.map((item) => {
+      tempTotal += item.price * item.amount;
+     itemsTotal += item.amount;
+     //for displaying the amount of items and total price in the checkout chat.
+     linkValue += item.amount + ' ' + item.title + ', ';
+    });
+    cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
+    cartItems.innerText = itemsTotal;
+    //to create href attributes to display the link contents and items total price rounded up to 2.
+    document.getElementById("check").href= linkValue + 'Total Price:$' + parseFloat(tempTotal.toFixed(2));
   }
+  addCartItems(item) {
+    const div = document.createElement("div");
+    div.classList.add("cart-item");
+    div.innerHTML = `<img src=${item.image} alt="product" />
+        <div class="text-black">
+          <h4 class="capitalize">${item.title}</h4>
+          <h5>$${item.price}</h5>
+          <span class="remove-item cursor-pointer" data-id = ${item.id}>remove</span>
+        </div>
+        <div class="text-black"> 
+        <i class="fas fa-chevron-up cursor-pointer" data-id= ${item.id}></i>
+        <p class="item-amount self-center">${item.amount}</p>
+        <i class="fas fa-chevron-down cursor-pointer" data-id= ${item.id}></i>
+      </div>
+      `; 
+    cartContent.appendChild(div);
+  }
+  showCart() {
+    cartOverlay.classList.add("transparentBcg");
+    cartDom.classList.add("showCart");
+  }
+  //a method upon the loading of the page, to check the cart value from the local storage.
+  setupAPP() {
+    cart = Storage.getCart();
+    this.setCartValues(cart);
+    this.populateCart(cart);
+    //EventListeners for Displaying and Hiding the cart.
+    cartBtn.addEventListener("click", this.showCart);
+    closeCartBtn.addEventListener("click", this.hideCart);
+  }
+  populateCart(cart) {
+    cart.forEach((item) => this.addCartItems(item));
+  }
+  //to close cart
+  hideCart() {
+    cartOverlay.classList.remove("transparentBcg");
+    cartDom.classList.remove("showCart");
+  }
+
+  //A method for the cart logic
+  cartLogic() {
+    cartContent.addEventListener("click", (event) => {
+      //For the remove button in the cart
+      if (event.target.classList.contains("remove-item")) {
+        let removeItem = event.target;
+        let id = removeItem.dataset.id;
+        cartContent.removeChild(removeItem.parentElement.parentElement);
+        this.removeItem(id);
+      }
+      //for the increament of the variant
+      else if (event.target.classList.contains("fa-chevron-up")) {
+        let increaseNumber = event.target;
+        let id = increaseNumber.dataset.id;
+        let tempItem = cart.find((item) => item.id === id);
+        tempItem.amount = tempItem.amount + 1;
+        Storage.saveCart(cart);
+        this.setCartValues(cart);
+        increaseNumber.nextElementSibling.innerText = tempItem.amount;
+      }
+      //for the reduction of the variant
+      else if (event.target.classList.contains("fa-chevron-down")) {
+        let lowerAmount = event.target;
+        let id = lowerAmount.dataset.id;
+        let tempItem = cart.find((item) => item.id === id);
+        tempItem.amount = tempItem.amount - 1;
+        if (tempItem.amount > 0) {
+          Storage.saveCart(cart);
+          this.setCartValues(cart);
+          lowerAmount.previousElementSibling.innerText = tempItem.amount;
+        } else {
+          cartContent.removeChild(lowerAmount.parentElement.parentElement);
+          this.removeItem(id);
+        }
+      }
+    });
+    //For the clear cart  button event
+    //clearCartBtn.addEventListener('click',() => {
+    //this.clearCart();
+    //});
+  }
+  //For the Clear cart button Functionalities.
+  //clearCart() {
+  //let cartItems = cart.map(item => item.id);
+  //cartItems.forEach(id => this.removeItem(id))
+
+  //while(cartContent.children.length >0) {
+  //  cartContent.removeChild(cartContent.children[0])
+  // }
+  // this.hideCart();
+  //}
+
+  //to remove the items from the cart doing that with their ID.
+  removeItem(id) {
+    cart = cart.filter((item) => item.id !== id);
+    this.setCartValues(cart);
+    Storage.saveCart(cart);
+    let button = this.getSingleButton(id);
+    button.disabled = false;
+    button.innerHTML = `<i class ="fas fa-shopping-cart">add to cart</i>`;
+  }
+  getSingleButton(id) {
+    return buttonsDOM.find((button) => button.dataset.id === id);
+  }
+}
+
+//To store it in the local storage.
+
+class Storage {
+  static saveProducts(products) {
+    localStorage.setItem("products", JSON.stringify(products));
+  }
+  static getProduct(id) {
+    let products = JSON.parse(localStorage.getItem("products"));
+    return products.find((product) => product.id === id);
+  }
+  //Getting the new cart values and saving it in the local storage
+  static saveCart(cart) {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+  static getCart() {
+    return localStorage.getItem("cart")
+      ? JSON.parse(localStorage.getItem("cart"))
+      : [];
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const ui = new UI();
+  const products = new Products();
+
+  // To setup the products to load in cart
+  ui.setupAPP();
+
+  //get all products to the local storage.
+  products
+    .getProducts()
+    .then((products) => {
+      ui.displayProducts(products);
+      Storage.saveProducts(products);
+    })
+    .then(() => {
+      ui.getBagButtons();
+      ui.cartLogic();
+    });
+})
