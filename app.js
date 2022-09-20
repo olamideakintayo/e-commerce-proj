@@ -113,7 +113,7 @@ class UI {
     );
     productsDom.innerHTML = result;
   }
-}
+
 
 
   //the button add to cart to display the products to the cart by the ID.
