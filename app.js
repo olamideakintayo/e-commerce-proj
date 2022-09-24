@@ -52,7 +52,7 @@ class Products {
    //to display the products
 
    class UI {
-    displayProducts(products) {
+    displayProducts(products,printCartTotalprice) {
       let result = "";
       products.forEach((product) => {
          //If Statement displaying the Soldout Items
@@ -68,12 +68,13 @@ class Products {
   
             </div>
             <div class="soldout">
+            <img src="./images/red-dot.png" class="red-dot" />
             Soldout
             </div>
-            <h3 class="capitalize text-center">
+            <h3 class="capitalize text-center line-through">
             ${product.title} 
             </h3>
-            <h4 class="text-center">
+            <h4 class="text-center line-through">
             $${product.price}
             </h4>
           </article>
@@ -107,7 +108,9 @@ class Products {
         
       }
       );
+      
       productsDom.innerHTML = result;
+      
     }
     
     getBagButtons() {
@@ -141,21 +144,21 @@ class Products {
 
     //set cart values plus the Checkout functions.
   setCartValues(cart) {
-    let tempTotal = 0;
-    let itemsTotal = 0;
+   // let tempTotal = 0;
+   // let itemsTotal = 0;
     //for the whatsapp checkout link
-    let linkValue = `https://wa.me/+2349032592825?text=I%20will%20like%20to%20place%20an%20order%20of%20`;
+    //let linkValue = `https://wa.me/+2349032592825?text=I%20will%20like%20to%20place%20an%20order%20of%20`;
     //when you click on the add to cart it will display the total price in the cart after adding them up.
-    cart.map((item) => {
-      tempTotal += item.price * item.amount;
-     itemsTotal += item.amount;
-     //for displaying the amount of items and total price in the checkout chat.
-     linkValue += item.amount + ' ' + item.title + ', ';
-    });
-    cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
-    cartItems.innerText = itemsTotal;
+    // cart.map((item) => {
+    //   tempTotal += item.price * item.amount;
+    //  itemsTotal += item.amount;
+    //  //for displaying the amount of items and total price in the checkout chat.
+    //  linkValue += item.amount + ' ' + item.title + ', ';
+    // });
+    // cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
+    // cartItems.innerText = itemsTotal;
     //to create href attributes to display the link contents and items total price rounded up to 2.
-    document.getElementById("check").href= linkValue + 'Total Price:$' + parseFloat(tempTotal.toFixed(2));
+    //document.getElementById("check").href= linkValue + 'Total Price:$' + parseFloat(tempTotal.toFixed(2));
   }
   addCartItems(item) {
     const div = document.createElement("div");
@@ -260,11 +263,13 @@ class Products {
   getSingleButton(id) {
     return buttonsDOM.find((button) => button.dataset.id === id);
   }
-}
-
+} 
+///local storage checkout.
+ 
 //To store it in the local storage.
 
 class Storage {
+  
   static saveProducts(products) {
     localStorage.setItem("products", JSON.stringify(products));
   }
@@ -282,6 +287,7 @@ class Storage {
       : [];
   }
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const ui = new UI();
@@ -302,3 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ui.cartLogic();
     });
 })
+
+
+
+
