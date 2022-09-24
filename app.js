@@ -22,6 +22,8 @@ const productsDom = document.querySelector(".products-center");
 } 
 
 
+
+
 // for the cart
 
 let cart = [];
@@ -80,7 +82,9 @@ class Products {
           </article>
           <!-- end of single product-->
           `;
-          //Else Statement returning the Available Products
+  
+
+        //Else Statement returning the Available Products
        } else{
           result += `
           <!-- single product -->
@@ -113,7 +117,11 @@ class Products {
       
     }
     
-    getBagButtons() {
+  
+
+
+  //the button add to cart to display the products to the cart by the ID.
+  getBagButtons() {
       const buttons = [...document.querySelectorAll(".bag-btn")];
       buttonsDOM = buttons;
       buttons.forEach((button) => {
@@ -143,6 +151,8 @@ class Products {
     }
 
     //set cart values plus the Checkout functions.
+
+  //set cart values plus the Checkout functions.
   setCartValues(cart) {
    // let tempTotal = 0;
    // let itemsTotal = 0;
@@ -157,6 +167,15 @@ class Products {
     // });
     // cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
     // cartItems.innerText = itemsTotal;
+
+    cart.map((item) => {
+      tempTotal += item.price * item.amount;
+     itemsTotal += item.amount;
+     //for displaying the amount of items and total price in the checkout chat.
+     linkValue += item.amount + ' ' + item.title + ', ';
+    });
+    cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
+    cartItems.innerText = itemsTotal;
     //to create href attributes to display the link contents and items total price rounded up to 2.
     //document.getElementById("check").href= linkValue + 'Total Price:$' + parseFloat(tempTotal.toFixed(2));
   }
