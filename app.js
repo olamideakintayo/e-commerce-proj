@@ -54,7 +54,7 @@ class Products {
    //to display the products
 
    class UI {
-    displayProducts(products,printCartTotalprice) {
+    displayProducts(products) {
       let result = "";
       products.forEach((product) => {
          //If Statement displaying the Soldout Items
