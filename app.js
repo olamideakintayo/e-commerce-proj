@@ -126,7 +126,7 @@ class Products {
       buttonsDOM = buttons;
       buttons.forEach((button) => {
         let id = button.dataset.id;
-        let inCart = cart.map((item) => item.id === id);
+        let inCart = cart.find((item) => item.id === id);
         if (inCart) {
           button.innerText = "In Cart";
           button.disabled = true;
@@ -157,9 +157,9 @@ class Products {
         cart.map((item) => {
           tempTotal += item.price * item.amount;
           itemsTotal += item.amount;
+        });
       cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
        cartItems.innerText = itemsTotal;
-      });
    }
      
      
@@ -219,7 +219,7 @@ class Products {
         let tempItem = cart.find((item) => item.id === id);
         tempItem.amount = tempItem.amount + 1;
         Storage.saveCart(cart);
-        this.getCartTotalPrice (cart);
+        this.getCartTotalPrice(cart);
         increaseNumber.nextElementSibling.innerText = tempItem.amount;
       }
       //for the reduction of the variant
@@ -230,7 +230,7 @@ class Products {
         tempItem.amount = tempItem.amount - 1;
         if (tempItem.amount > 0) {
           Storage.saveCart(cart);
-          this.getCartTotalPrice (cart);
+          this.getCartTotalPrice(cart);
           lowerAmount.previousElementSibling.innerText = tempItem.amount;
         } else {
           cartContent.removeChild(lowerAmount.parentElement.parentElement);
