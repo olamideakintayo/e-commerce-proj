@@ -54,7 +54,7 @@ class Products {
    //to display the products
 
    class UI {
-    displayProducts(products) {
+    displayProducts(products ) {
       let result = "";
       products.forEach((product) => {
          //If Statement displaying the Soldout Items
@@ -126,7 +126,7 @@ class Products {
       buttonsDOM = buttons;
       buttons.forEach((button) => {
         let id = button.dataset.id;
-        let inCart = cart.find((item) => item.id === id);
+        let inCart = cart.map((item) => item.id === id);
         if (inCart) {
           button.innerText = "In Cart";
           button.disabled = true;
@@ -141,7 +141,7 @@ class Products {
           //Then we save the cart in the local storage.
           Storage.saveCart(cart);
           //Then we set cart value.
-          this.setCartValues(cart);
+          this.getCartTotalPrice (cart);
           //Then we display cart items when added to cart
           this.addCartItems(cartItem);
           //Then we show the cart to see our items added
@@ -150,35 +150,19 @@ class Products {
       });
     }
 
-    //set cart values plus the Checkout functions.
-
-  //set cart values plus the Checkout functions.
-  setCartValues(cart) {
-   // let tempTotal = 0;
-   // let itemsTotal = 0;
-    //for the whatsapp checkout link
-    //let linkValue = `https://wa.me/+2349032592825?text=I%20will%20like%20to%20place%20an%20order%20of%20`;
-    //when you click on the add to cart it will display the total price in the cart after adding them up.
-    // cart.map((item) => {
-    //   tempTotal += item.price * item.amount;
-    //  itemsTotal += item.amount;
-    //  //for displaying the amount of items and total price in the checkout chat.
-    //  linkValue += item.amount + ' ' + item.title + ', ';
-    // });
-    // cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
-    // cartItems.innerText = itemsTotal;
-
-    cart.map((item) => {
-      tempTotal += item.price * item.amount;
-     itemsTotal += item.amount;
-     //for displaying the amount of items and total price in the checkout chat.
-     linkValue += item.amount + ' ' + item.title + ', ';
-    });
-    cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
-    cartItems.innerText = itemsTotal;
-    //to create href attributes to display the link contents and items total price rounded up to 2.
-    //document.getElementById("check").href= linkValue + 'Total Price:$' + parseFloat(tempTotal.toFixed(2));
-  }
+    //set cart values 
+     getCartTotalPrice (cart) {
+      let tempTotal = 0;
+        let itemsTotal = 0;
+        cart.map((item) => {
+          tempTotal += item.price * item.amount;
+          itemsTotal += item.amount;
+      cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
+       cartItems.innerText = itemsTotal;
+      });
+   }
+     
+     
   addCartItems(item) {
     const div = document.createElement("div");
     div.classList.add("cart-item");
@@ -203,7 +187,7 @@ class Products {
   //a method upon the loading of the page, to check the cart value from the local storage.
   setupAPP() {
     cart = Storage.getCart();
-    this.setCartValues(cart);
+    this.getCartTotalPrice(cart);
     this.populateCart(cart);
     //EventListeners for Displaying and Hiding the cart.
     cartBtn.addEventListener("click", this.showCart);
@@ -235,7 +219,7 @@ class Products {
         let tempItem = cart.find((item) => item.id === id);
         tempItem.amount = tempItem.amount + 1;
         Storage.saveCart(cart);
-        this.setCartValues(cart);
+        this.getCartTotalPrice (cart);
         increaseNumber.nextElementSibling.innerText = tempItem.amount;
       }
       //for the reduction of the variant
@@ -246,7 +230,7 @@ class Products {
         tempItem.amount = tempItem.amount - 1;
         if (tempItem.amount > 0) {
           Storage.saveCart(cart);
-          this.setCartValues(cart);
+          this.getCartTotalPrice (cart);
           lowerAmount.previousElementSibling.innerText = tempItem.amount;
         } else {
           cartContent.removeChild(lowerAmount.parentElement.parentElement);
@@ -273,7 +257,7 @@ class Products {
   //to remove the items from the cart doing that with their ID.
   removeItem(id) {
     cart = cart.filter((item) => item.id !== id);
-    this.setCartValues(cart);
+    this.getCartTotalPrice(cart);
     Storage.saveCart(cart);
     let button = this.getSingleButton(id);
     button.disabled = false;
