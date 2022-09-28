@@ -10,8 +10,8 @@
 */
 
 *,
- ::before,
-    ::after {
+::before,
+::after {
   box-sizing: border-box;
   /* 1 */
   border-width: 0;
@@ -24,7 +24,7 @@
 
 ::before,
 ::after {
-     --tw-content: '';
+  --tw-content: '';
 }
 
 /*
