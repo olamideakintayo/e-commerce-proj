@@ -233,9 +233,20 @@ body {
   position: absolute;
   left: 23%;
   transform: rotate(-45deg);
+  text-decoration: line-through;
 }
 
 .soldout-image {
   opacity: 0.5;
   height: 12rem;
 }
+
+.red-dot{
+  width: 10px;
+  top: 60%;
+  left: 20%;
+ }
+ 
+ .strike{
+  text-decoration: line-through;
+ }

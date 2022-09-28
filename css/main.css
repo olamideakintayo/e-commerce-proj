@@ -912,14 +912,21 @@ body {
 /* --------------- Soldout Image -------------- */
 
 .soldout{
-  top : 25%;
-  font-size: 40px;
   position: absolute;
-  left: 23%;
-  transform: rotate(-45deg);
+  left: 44%;
+  font-size: 12px;
+  top: 81%;
 }
+
 
 .soldout-image {
   opacity: 0.5;
   height: 12rem;
+}
+
+.red-dot{
+ width: 10px;
+ position: relative;
+ top: 14px;
+ left: -35%;
 }
