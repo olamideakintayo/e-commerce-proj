@@ -1,3 +1,4 @@
+
 //First we grab the variables
 const cartBtn = document.querySelector(".cart-btn");
 const closeCartBtn = document.querySelector(".close-cart");
@@ -8,7 +9,6 @@ const cartItems = document.querySelector(".cart-items");
 const cartTotal = document.querySelector(".cart-total");
 const cartContent = document.querySelector(".cart-content");
 const productsDom = document.querySelector(".products-center");
-
 
  //for the dark/light mode
  function darkMode() {
@@ -21,17 +21,17 @@ const productsDom = document.querySelector(".products-center");
   }
 } 
 
-
-
-
 // for the cart
+let tempTotal;
+let itemsTotal;
 
 let cart = [];
+
+
 //for the cart buttons
 let buttonsDOM = [];
 
 //to get the products
-
 class Products {
   async getProducts() {
     try {
@@ -117,9 +117,6 @@ class Products {
       
     }
     
-  
-
-
   //the button add to cart to display the products to the cart by the ID.
   getBagButtons() {
       const buttons = [...document.querySelectorAll(".bag-btn")];
@@ -131,38 +128,80 @@ class Products {
           button.innerText = "In Cart";
           button.disabled = true;
         }
+
+       
         button.addEventListener("click", (event) => {
           event.target.innerText = "In Cart";
           event.target.disabled = true;
-          //to get product from products based on the ID we are getting from the button.
-          let cartItem = { ...Storage.getProduct(id), amount: 1 };
-          //Then we add the product to the cart when being; click add to cart.
-          cart = [...cart, cartItem];
+       //to get product from products based on the ID we are getting from the button.
+       let cartItem = { ...Storage.getProduct(id), amount: 1 };
+       //Then we add the product to the cart when being; click add to cart.
+      cart = [...cart, cartItem];
           //Then we save the cart in the local storage.
           Storage.saveCart(cart);
           //Then we set cart value.
-          this.getCartTotalPrice (cart);
+          this.getCartTotalPrice(cart);
           //Then we display cart items when added to cart
           this.addCartItems(cartItem);
           //Then we show the cart to see our items added
           this.showCart();
+          this.checkout()
         });
       });
+      
     }
+   
 
     //set cart values 
-     getCartTotalPrice (cart) {
-      let tempTotal = 0;
-        let itemsTotal = 0;
-        cart.map((item) => {
-          tempTotal += item.price * item.amount;
-          itemsTotal += item.amount;
-        });
+   getCartTotalPrice(cart) {
+    let tempTotal = 0; 
+    let itemsTotal = 0;
+    cart.map((item) => {
+     tempTotal += item.price * item.amount;
+    itemsTotal += item.amount;
+      });
+
       cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
-       cartItems.innerText = itemsTotal;
-   }
-     
-     
+      cartItems.innerText = itemsTotal;
+ }
+  
+ generateWhatsappLink() {
+  let tempTotal = 0; 
+  let itemsTotal = 0;
+  const itemDetails = cart.map(item => {
+  return (tempTotal += item.price * item.amount,
+    itemsTotal += item.amount),
+  [item.amount, item.title, `${'$'+item.price}`].join(" ")
+})
+  console.log(itemDetails)
+  //for the whatsapp checkout link
+  let link = `https://wa.me/+2349032592825?text=I%20will%20like%20to%20place%20an%20order%20of%20`;
+  //for displaying the amount of items and total price in the checkout chat.
+   link += itemDetails + ', ';
+   //to create href attributes to display the link contents and items total price rounded up to 2.
+   document.getElementById("check").href = link + 'Total Price:$' + parseFloat(tempTotal.toFixed(2))
+ }
+
+
+checkout(){
+
+  const checkoutButton = document.getElementById('check')
+
+  checkoutButton.addEventListener('click', () => {
+    
+
+    this.generateWhatsappLink();
+
+  })
+  //this.clearCart();
+  }
+
+  // clearCart() {
+  //   document.getElementById('checkout-btn').addEventListener('click', () => {
+  //     window.localStorage.clear("cart")
+  //     window.location.reload("cart")
+  //   })
+  // }
   addCartItems(item) {
     const div = document.createElement("div");
     div.classList.add("cart-item");
