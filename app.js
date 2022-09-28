@@ -1,3 +1,4 @@
+
 //First we grab the variables
 const cartBtn = document.querySelector(".cart-btn");
 const closeCartBtn = document.querySelector(".close-cart");
@@ -8,7 +9,6 @@ const cartItems = document.querySelector(".cart-items");
 const cartTotal = document.querySelector(".cart-total");
 const cartContent = document.querySelector(".cart-content");
 const productsDom = document.querySelector(".products-center");
-
 
  //for the dark/light mode
  function darkMode() {
@@ -21,16 +21,17 @@ const productsDom = document.querySelector(".products-center");
   }
 } 
 
-
-
 // for the cart
+let tempTotal;
+let itemsTotal;
 
 let cart = [];
+
+
 //for the cart buttons
 let buttonsDOM = [];
 
 //to get the products
-
 class Products {
   async getProducts() {
     try {
@@ -51,119 +52,158 @@ class Products {
   }
 }
 
-//to display the products
+   //to display the products
 
-class UI {
-  displayProducts(products) {
-    let result = "";
-    products.forEach((product) => {
-       //If Statement displaying the Soldout Items
-        if(product.soldout == true) {
-        console.log('soldout');
-        result += `
-        <!-- single product -->
-        <article class="product relative">
-          <div id="img-container">
-            <img
-            src=${product.image}
-            class="block relative soldout-image" />
-
-          </div>
-          <div class="soldout">
-          Soldout
-          </div>
-          <h3 class="capitalize text-center">
-          ${product.title} 
-          </h3>
-          <h4 class="text-center">
-          $${product.price}
-          </h4>
-        </article>
-        <!-- end of single product-->
-        `;
-
+   class UI {
+    displayProducts(products ) {
+      let result = "";
+      products.forEach((product) => {
+         //If Statement displaying the Soldout Items
+          if(product.soldout == true) {
+          console.log('soldout');
+          result += `
+          <!-- single product -->
+          <article class="product relative">
+            <div id="img-container">
+              <img
+              src=${product.image}
+              class="block relative soldout-image" />
+  
+            </div>
+            <div class="soldout">
+            <img src="./images/red-dot.png" class="red-dot" />
+            Soldout
+            </div>
+            <h3 class="capitalize text-center line-through">
+            ${product.title} 
+            </h3>
+            <h4 class="text-center line-through">
+            $${product.price}
+            </h4>
+          </article>
+          <!-- end of single product-->
+          `;
+  
 
         //Else Statement returning the Available Products
-     } else{
-        result += `
-        <!-- single product -->
-        <article class="product">
-          <div id="img-container">
-            <img
-            src=${product.image}
-            id="product-img"
-            class="block " />
-            <button class="bag-btn absolute bg-brightRed right-0 border-none uppercase font-bold cursor-pointer text-black" data-id=${product.id}>
-              <i class="fas fa-shopping-cart"></i>
-              add to cart
-            </button>
-          </div>
-          <h3 class="capitalize text-center">
-          ${product.title} 
-          </h3>
-          <h4 class="text-center">
-          $${product.price}
-          </h4>
-        </article>
-        <!-- end of single product-->
-        `;
-     }
+       } else{
+          result += `
+          <!-- single product -->
+          <article class="product">
+            <div id="img-container">
+              <img
+              src=${product.image}
+              id="product-img"
+              class="block " />
+              <button class="bag-btn absolute bg-brightRed right-0 border-none uppercase font-bold cursor-pointer text-black" data-id=${product.id}>
+                <i class="fas fa-shopping-cart"></i>
+                add to cart
+              </button>
+            </div>
+            <h3 class="capitalize text-center">
+            ${product.title} 
+            </h3>
+            <h4 class="text-center">
+            $${product.price}
+            </h4>
+          </article>
+          <!-- end of single product-->
+          `;
+       }
+        
+      }
+      );
+      
+      productsDom.innerHTML = result;
       
     }
-    );
-    productsDom.innerHTML = result;
-  }
-
-
-
+    
   //the button add to cart to display the products to the cart by the ID.
   getBagButtons() {
-    const buttons = [...document.querySelectorAll(".bag-btn")];
-    buttonsDOM = buttons;
-    buttons.forEach((button) => {
-      let id = button.dataset.id;
-      let inCart = cart.find((item) => item.id === id);
-      if (inCart) {
-        button.innerText = "In Cart";
-        button.disabled = true;
-      }
-      button.addEventListener("click", (event) => {
-        event.target.innerText = "In Cart";
-        event.target.disabled = true;
-        //to get product from products based on the ID we are getting from the button.
-        let cartItem = { ...Storage.getProduct(id), amount: 1 };
-        //Then we add the product to the cart when being; click add to cart.
-        cart = [...cart, cartItem];
-        //Then we save the cart in the local storage.
-        Storage.saveCart(cart);
-        //Then we set cart value.
-        this.setCartValues(cart);
-        //Then we display cart items when added to cart
-        this.addCartItems(cartItem);
-        //Then we show the cart to see our items added
-        this.showCart();
+      const buttons = [...document.querySelectorAll(".bag-btn")];
+      buttonsDOM = buttons;
+      buttons.forEach((button) => {
+        let id = button.dataset.id;
+        let inCart = cart.find((item) => item.id === id);
+        if (inCart) {
+          button.innerText = "In Cart";
+          button.disabled = true;
+        }
+
+
+       
+        button.addEventListener("click", (event) => {
+          event.target.innerText = "In Cart";
+          event.target.disabled = true;
+       //to get product from products based on the ID we are getting from the button.
+       let cartItem = { ...Storage.getProduct(id), amount: 1 };
+       //Then we add the product to the cart when being; click add to cart.
+      cart = [...cart, cartItem];
+          //Then we save the cart in the local storage.
+          Storage.saveCart(cart);
+          //Then we set cart value.
+          this.getCartTotalPrice(cart);
+          //Then we display cart items when added to cart
+          this.addCartItems(cartItem);
+          //Then we show the cart to see our items added
+          this.showCart();
+          this.checkout()
+        });
       });
-    });
+      
+    }
+   
+
+    //set cart values 
+   getCartTotalPrice(cart) {
+    let tempTotal = 0; 
+    let itemsTotal = 0;
+    cart.map((item) => {
+     tempTotal += item.price * item.amount;
+    itemsTotal += item.amount;
+      });
+
+      cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
+      cartItems.innerText = itemsTotal;
+ }
+  
+ generateWhatsappLink() {
+  let tempTotal = 0; 
+  let itemsTotal = 0;
+  const itemDetails = cart.map(item => {
+  return (tempTotal += item.price * item.amount,
+    itemsTotal += item.amount),
+  [item.amount, item.title, `${'$'+item.price}`].join(" ")
+})
+  console.log(itemDetails)
+  //for the whatsapp checkout link
+  let link = `https://wa.me/+2349032592825?text=I%20will%20like%20to%20place%20an%20order%20of%20`;
+  //for displaying the amount of items and total price in the checkout chat.
+   link += itemDetails + ', ';
+   //to create href attributes to display the link contents and items total price rounded up to 2.
+   document.getElementById("check").href = link + 'Total Price:$' + parseFloat(tempTotal.toFixed(2))
+ }
+
+
+checkout(){
+
+  const checkoutButton = document.getElementById('check')
+
+  checkoutButton.addEventListener('click', () => {
+    
+
+    this.generateWhatsappLink();
+
+  })
+  //this.clearCart();
   }
 
-  //set cart values plus the Checkout functions.
-  setCartValues(cart) {
-    let tempTotal = 0;
-    let itemsTotal = 0;
-    //for the whatsapp checkout link
-    let linkValue = `https://wa.me/+2349032592825?text=I%20will%20like%20to%20place%20an%20order%20of%20`;
-    //when you click on the add to cart it will display the total price in the cart after adding them up.
-    cart.map((item) => {
-      tempTotal += item.price * item.amount;
-     itemsTotal += item.amount;
-     //for displaying the amount of items and total price in the checkout chat.
-     linkValue += item.amount + ' ' + item.title + ', ';
-    });
-    cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
-    cartItems.innerText = itemsTotal;
-    //to create href attributes to display the link contents and items total price rounded up to 2.
-    document.getElementById("check").href= linkValue + 'Total Price:$' + parseFloat(tempTotal.toFixed(2));
-  }
+  // clearCart() {
+  //   document.getElementById('checkout-btn').addEventListener('click', () => {
+  //     window.localStorage.clear("cart")
+  //     window.location.reload("cart")
+  //   })
+  // }
   addCartItems(item) {
     const div = document.createElement("div");
     div.classList.add("cart-item");
@@ -188,7 +228,7 @@ class UI {
   //a method upon the loading of the page, to check the cart value from the local storage.
   setupAPP() {
     cart = Storage.getCart();
-    this.setCartValues(cart);
+    this.getCartTotalPrice(cart);
     this.populateCart(cart);
     //EventListeners for Displaying and Hiding the cart.
     cartBtn.addEventListener("click", this.showCart);
@@ -220,7 +260,11 @@ class UI {
         let tempItem = cart.find((item) => item.id === id);
         tempItem.amount = tempItem.amount + 1;
         Storage.saveCart(cart);
+
         this.setCartValues(cart);
+
+        this.getCartTotalPrice(cart);
+
         increaseNumber.nextElementSibling.innerText = tempItem.amount;
       }
       //for the reduction of the variant
@@ -232,6 +276,7 @@ class UI {
         if (tempItem.amount > 0) {
           Storage.saveCart(cart);
           this.setCartValues(cart);
+          this.getCartTotalPrice(cart);
           lowerAmount.previousElementSibling.innerText = tempItem.amount;
         } else {
           cartContent.removeChild(lowerAmount.parentElement.parentElement);
@@ -258,7 +303,7 @@ class UI {
   //to remove the items from the cart doing that with their ID.
   removeItem(id) {
     cart = cart.filter((item) => item.id !== id);
-    this.setCartValues(cart);
+    this.getCartTotalPrice(cart);
     Storage.saveCart(cart);
     let button = this.getSingleButton(id);
     button.disabled = false;
@@ -267,4 +312,48 @@ class UI {
   getSingleButton(id) {
     return buttonsDOM.find((button) => button.dataset.id === id);
   }
+} 
+///local storage checkout.
+ 
+//To store it in the local storage.
+
+class Storage {
+  
+  static saveProducts(products) {
+    localStorage.setItem("products", JSON.stringify(products));
+  }
+  static getProduct(id) {
+    let products = JSON.parse(localStorage.getItem("products"));
+    return products.find((product) => product.id === id);
+  }
+  //Getting the new cart values and saving it in the local storage
+  static saveCart(cart) {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+  static getCart() {
+    return localStorage.getItem("cart")
+      ? JSON.parse(localStorage.getItem("cart"))
+      : [];
+  }
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const ui = new UI();
+  const products = new Products();
+
+  // To setup the products to load in cart
+  ui.setupAPP();
+
+  //get all products to the local storage.
+  products
+    .getProducts()
+    .then((products) => {
+      ui.displayProducts(products);
+      Storage.saveProducts(products);
+    })
+    .then(() => {
+      ui.getBagButtons();
+      ui.cartLogic();
+    });
+})
