@@ -225,15 +225,13 @@ body {
 
 /* --------------- End of Cart ---------------- */
 
-/* --------------- Soldout Image -------------- */
+/* --------------- Soldout -------------- */
 
 .soldout{
-  top : 25%;
-  font-size: 40px;
   position: absolute;
-  left: 23%;
-  transform: rotate(-45deg);
-  text-decoration: line-through;
+  left: 44%;
+  font-size: 12px;
+  top: 81%;
 }
 
 .soldout-image {
@@ -243,10 +241,32 @@ body {
 
 .red-dot{
   width: 10px;
-  top: 60%;
-  left: 20%;
+  position: relative;
+  top: 14px;
+  left: -35%;
  }
- 
- .strike{
-  text-decoration: line-through;
+
+/* -------------- End of Soldout -------------- */
+
+/* ------------- inStock ---------------------- */
+
+.inStock{
+  position: absolute;
+  left: 44%;
+  font-size: 12px;
+  top: 73.5%;
+}
+
+.inStock-image {
+  height: 12rem;
+}
+
+.green-dot{
+  width: 30px;
+  position: relative;
+  top: 23.5px;
+  left: -65%;
  }
+
+
+/* ------------- End of inStock --------------- */

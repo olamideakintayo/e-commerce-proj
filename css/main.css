@@ -930,3 +930,29 @@ body {
  top: 14px;
  left: -35%;
 }
+
+/* -------------- End of Soldout Image --------------- */
+
+/* ------------- inStock ---------------------- */
+
+.inStock{
+  position: absolute;
+  left: 44%;
+  font-size: 12px;
+  top: 73.5%;
+}
+
+.inStock-image {
+  height: 12rem;
+}
+
+.green-dot{
+  width: 30px;
+  position: relative;
+  top: 23.5px;
+  left: -65%;
+ }
+
+/* ------------- End of inStock --------------- */
+
+

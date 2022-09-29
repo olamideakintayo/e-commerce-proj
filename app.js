@@ -89,21 +89,21 @@ class Products {
        } else if(product.inStock == true) {
           result += `
           <!-- single product -->
-          <article class="product">
+          <article class="product relative">
             <div id="img-container">
               <img
               src=${product.image}
               id="product-img"
-              class="block relative" />
-              <div class="soldout">
-             <img src="./images/green-dot.png" class="red-dot" />
+              class="block relative inStock-image" />
+              <button class="bag-btn absolute bg-brightRed right-0 border-none uppercase font-bold cursor-pointer text-black" data-id=${product.id}>
+              <i class="fas fa-shopping-cart"></i>
+              add to cart
+            </button>
+          </div>
+              <div class="inStock">
+             <img src="./images/green-dot.png" class="green-dot" />
              Instock
              </div>
-              <button class="bag-btn absolute bg-brightRed right-0 border-none uppercase font-bold cursor-pointer text-black" data-id=${product.id}>
-                <i class="fas fa-shopping-cart"></i>
-                add to cart
-              </button>
-            </div>
             <h3 class="capitalize text-center">
             ${product.title} 
             </h3>

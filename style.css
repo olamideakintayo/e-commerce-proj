@@ -1,5 +1,0 @@
-/* Hero Section */
-.hero {
-  min-height: calc(100vh - 60px);
-  background: url("./images/hero-bcg.jpeg") center/cover no-repeat;
-}
