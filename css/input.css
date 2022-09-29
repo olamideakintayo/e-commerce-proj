@@ -270,3 +270,25 @@ body {
 
 
 /* ------------- End of inStock --------------- */
+
+/* ------------ Footer text ------------------- */
+.footer-text{
+  position: relative;
+  left: 40px;
+}
+/* ------------ End of Footer text ------------------- */
+
+/* ------------ clear cart button ------------------- */
+.clear-cart{
+  position: relative;
+left: 20em;
+bottom: 3.5em;
+letter-spacing: var(--mainSpacing);
+font-size: 0.8rem;
+color: var(--mainBlack);
+border: 1px solid var(--primaryColor);
+border-radius: 6px;
+transition: var(--mainTransition);
+}
+
+/*--------------- End of clear cart button -------------- */
