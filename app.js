@@ -127,6 +127,7 @@ class Products {
         if (inCart) {
           button.innerText = "In Cart";
           button.disabled = true;
+
         }
        
         button.addEventListener("click", (event) => {
@@ -142,8 +143,7 @@ class Products {
           this.getCartTotalPrice(cart);
           //Then we display cart items when added to cart
           this.addCartItems(cartItem);
-          //Then we show the cart to see our items added
-          this.showCart();
+          //then we call the event listener that calls the whatsapp function
           this.checkout()
         });
       });
@@ -249,7 +249,6 @@ class Products {
   cartItems.forEach(id => this.removeItem(id))
   while(cartContent.children.length >0) {
    cartContent.removeChild(cartContent.children[0])
-   
   };
   this.hideCart();
   }
@@ -322,7 +321,6 @@ class Storage {
       : [];
   }
 }
-
 
 document.addEventListener("DOMContentLoaded", () => {
   const ui = new UI();
