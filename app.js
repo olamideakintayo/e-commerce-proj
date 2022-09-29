@@ -43,7 +43,8 @@ class Products {
         const { id } = item.sys;
         const image = item.fields.image.fields.file.url;
         const soldout = item.fields.soldout;
-        return { title, price, id, image, soldout };
+        const inStock = item.fields.inStock;
+        return { title, price, id, image, soldout, inStock};
       });
       return products;
     } catch (error) {
@@ -85,7 +86,7 @@ class Products {
   
 
         //Else Statement returning the Available Products
-       } else{
+       } else if(product.inStock == true) {
           result += `
           <!-- single product -->
           <article class="product">
@@ -93,7 +94,11 @@ class Products {
               <img
               src=${product.image}
               id="product-img"
-              class="block " />
+              class="block relative" />
+              <div class="soldout">
+             <img src="./images/green-dot.png" class="red-dot" />
+             Instock
+             </div>
               <button class="bag-btn absolute bg-brightRed right-0 border-none uppercase font-bold cursor-pointer text-black" data-id=${product.id}>
                 <i class="fas fa-shopping-cart"></i>
                 add to cart
