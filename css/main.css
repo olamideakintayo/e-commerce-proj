@@ -960,7 +960,18 @@ body {
    display: flex;
   font-family: cursive;
   margin-top: 2em;
-  align-items: center;
+position: absolute;
+margin-left:100px;
+}
+
+@media screen and (min-width: 768px) {
+  .footer-text{
+    display: flex;
+  font-family: cursive;
+  margin-top: 2em;
+position: relative;
+margin-left:43em;
+  }
 }
 /* ------------ End of Footer text ------------------- */
 
