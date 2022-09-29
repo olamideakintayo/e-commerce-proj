@@ -19,7 +19,7 @@ const productsDom = document.querySelector(".products-center");
     document.body.style.backgroundColor = "black";
     document.body.style.color = "white";
   }
-} 
+}
 
 // for the cart
 let tempTotal;
@@ -334,7 +334,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .getProducts()
     .then((products) => {
       ui.displayProducts(products);
-      Storage.saveProducts(products);
+     Storage.saveProducts(products);
     })
     .then(() => {
       ui.getBagButtons();
