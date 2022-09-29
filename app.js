@@ -163,43 +163,8 @@ class Products {
       cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
       cartItems.innerText = itemsTotal;
  }
-  
- WhatsappLinkLogic() {
-  let tempTotal = 0; 
-  let itemsTotal = 0;
-  const itemDetails = cart.map(item => {
-  return (tempTotal += item.price * item.amount,
-    itemsTotal += item.amount),
-  [item.amount, item.title, `${'$'+item.price}`].join(" ")
-})
-  //for the whatsapp checkout link
-  let link = `https://wa.me/+2349032592825?text=I%20will%20like%20to%20place%20an%20order%20of%20`;
-  //for displaying the amount of items and total price in the checkout chat.
-   link += itemDetails + ', ';
-   //to create href attributes to display the link contents and items total price rounded up to 2.
-   document.getElementById("check").href = link + 'Total Price:$' + parseFloat(tempTotal.toFixed(2))
- }
 
-
-checkout(){
-
-  const checkoutButton = document.getElementById('check')
-
-  checkoutButton.addEventListener('click', () => {
-    
-
-    this.WhatsappLinkLogic();
-
-  })
-  //this.clearCart();
-  }
-
-  // clearCart() {
-  //   document.getElementById('checkout-btn').addEventListener('click', () => {
-  //     window.localStorage.clear("cart")
-  //     window.location.reload("cart")
-  //   })
-  // }
+ 
   addCartItems(item) {
     const div = document.createElement("div");
     div.classList.add("cart-item");
@@ -307,13 +272,45 @@ checkout(){
   getSingleButton(id) {
     return buttonsDOM.find((button) => button.dataset.id === id);
   }
-} 
-///local storage checkout.
- 
-//To store it in the local storage.
 
+   //The whatsapp link function that returns the cart order message.
+ WhatsappLinkLogic() {
+  let tempTotal = 0; 
+  let itemsTotal = 0;
+  const itemDetails = cart.map(item => {
+  return (tempTotal += item.price * item.amount,
+    itemsTotal += item.amount),
+  [item.amount, item.title, `${'$'+item.price}`].join(" ")
+})
+  //for the whatsapp checkout link
+  let link = `https://wa.me/+2349032592825?text=I%20will%20like%20to%20place%20an%20order%20of%20`;
+  //for displaying the amount of items and total price in the checkout chat.
+   link += itemDetails + ', ';
+   //to create href attributes to display the link contents and items total price rounded up to 2.
+   document.getElementById("check").href = link + 'Total Price:$' + parseFloat(tempTotal.toFixed(2))
+ }
+
+//the event listener that calls the whatsapp function
+checkout(){
+  const checkoutButton = document.getElementById('check')
+  checkoutButton.addEventListener('click', () => {
+    this.WhatsappLinkLogic();
+  })
+  this.clearCart();
+  }
+
+  ///A function that clears the local storage after check out.
+  clearCart() {
+    document.getElementById('checkout-btn').addEventListener('click', () => {
+      window.localStorage.clear("cart")
+      window.location.reload("cart")
+    })
+  }
+} 
+
+
+//To store it in the local storage.
 class Storage {
-  
   static saveProducts(products) {
     localStorage.setItem("products", JSON.stringify(products));
   }
