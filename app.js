@@ -129,8 +129,6 @@ class Products {
           button.innerText = "In Cart";
           button.disabled = true;
         }
-
-
        
         button.addEventListener("click", (event) => {
           event.target.innerText = "In Cart";
@@ -260,9 +258,8 @@ checkout(){
         let tempItem = cart.find((item) => item.id === id);
         tempItem.amount = tempItem.amount + 1;
         Storage.saveCart(cart);
-
         this.setCartValues(cart);
-
+        this.setCartValues(cart);
         this.getCartTotalPrice(cart);
 
         increaseNumber.nextElementSibling.innerText = tempItem.amount;
@@ -357,3 +354,4 @@ document.addEventListener("DOMContentLoaded", () => {
       ui.cartLogic();
     });
 })
+
