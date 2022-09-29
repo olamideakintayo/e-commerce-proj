@@ -149,7 +149,6 @@ class Products {
       });
       
     }
-   
 
     //set cart values 
    getCartTotalPrice(cart) {
@@ -159,12 +158,10 @@ class Products {
      tempTotal += item.price * item.amount;
     itemsTotal += item.amount;
       });
-
       cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
       cartItems.innerText = itemsTotal;
  }
 
- 
   addCartItems(item) {
     const div = document.createElement("div");
     div.classList.add("cart-item");
