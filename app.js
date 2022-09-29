@@ -242,7 +242,7 @@ checkout(){
   }
 
   //A method for the cart logic
-  cartLogic() {
+  initCart() {
     cartContent.addEventListener("click", (event) => {
       //For the remove button in the cart
       if (event.target.classList.contains("remove-item")) {
@@ -351,7 +351,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then(() => {
       ui.getBagButtons();
-      ui.cartLogic();
+      ui.initCart();
     });
 })
 
