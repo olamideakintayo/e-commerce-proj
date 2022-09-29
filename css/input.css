@@ -273,8 +273,21 @@ body {
 
 /* ------------ Footer text ------------------- */
 .footer-text{
-  position: relative;
-  left: 40px;
+  display: flex;
+ font-family: cursive;
+ margin-top: 2em;
+position: absolute;
+margin-left:100px;
+}
+
+@media screen and (min-width: 768px) {
+ .footer-text{
+   display: flex;
+ font-family: cursive;
+ margin-top: 2em;
+position: relative;
+margin-left:43em;
+ }
 }
 /* ------------ End of Footer text ------------------- */
 
