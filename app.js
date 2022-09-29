@@ -60,7 +60,6 @@ class Products {
       products.forEach((product) => {
          //If Statement displaying the Soldout Items
           if(product.soldout == true) {
-          console.log('soldout');
           result += `
           <!-- single product -->
           <article class="product relative">
@@ -173,7 +172,6 @@ class Products {
     itemsTotal += item.amount),
   [item.amount, item.title, `${'$'+item.price}`].join(" ")
 })
-  console.log(itemDetails)
   //for the whatsapp checkout link
   let link = `https://wa.me/+2349032592825?text=I%20will%20like%20to%20place%20an%20order%20of%20`;
   //for displaying the amount of items and total price in the checkout chat.
