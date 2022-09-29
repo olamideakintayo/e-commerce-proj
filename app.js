@@ -164,7 +164,7 @@ class Products {
       cartItems.innerText = itemsTotal;
  }
   
- generateWhatsappLink() {
+ WhatsappLinkLogic() {
   let tempTotal = 0; 
   let itemsTotal = 0;
   const itemDetails = cart.map(item => {
@@ -188,7 +188,7 @@ checkout(){
   checkoutButton.addEventListener('click', () => {
     
 
-    this.generateWhatsappLink();
+    this.WhatsappLinkLogic();
 
   })
   //this.clearCart();
