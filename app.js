@@ -218,8 +218,6 @@ class Products {
         let tempItem = cart.find((item) => item.id === id);
         tempItem.amount = tempItem.amount + 1;
         Storage.saveCart(cart);
-        this.setCartValues(cart);
-        this.setCartValues(cart);
         this.getCartTotalPrice(cart);
 
         increaseNumber.nextElementSibling.innerText = tempItem.amount;
@@ -232,7 +230,6 @@ class Products {
         tempItem.amount = tempItem.amount - 1;
         if (tempItem.amount > 0) {
           Storage.saveCart(cart);
-          this.setCartValues(cart);
           this.getCartTotalPrice(cart);
           lowerAmount.previousElementSibling.innerText = tempItem.amount;
         } else {
@@ -242,20 +239,20 @@ class Products {
       }
     });
     //For the clear cart  button event
-    //clearCartBtn.addEventListener('click',() => {
-    //this.clearCart();
-    //});
+    clearCartBtn.addEventListener('click',() => {
+      this.clearCart();
+      });
   }
   //For the Clear cart button Functionalities.
-  //clearCart() {
-  //let cartItems = cart.map(item => item.id);
-  //cartItems.forEach(id => this.removeItem(id))
-
-  //while(cartContent.children.length >0) {
-  //  cartContent.removeChild(cartContent.children[0])
-  // }
-  // this.hideCart();
-  //}
+  clearCart() {
+  let cartItems = cart.map(item => item.id);
+  cartItems.forEach(id => this.removeItem(id))
+  while(cartContent.children.length >0) {
+   cartContent.removeChild(cartContent.children[0])
+   
+  };
+  this.hideCart();
+  }
 
   //to remove the items from the cart doing that with their ID.
   removeItem(id) {
@@ -293,11 +290,11 @@ checkout(){
   checkoutButton.addEventListener('click', () => {
     this.WhatsappLinkLogic();
   })
-  this.clearCart();
+  this.clearCartLocalStorage();
   }
 
   ///A function that clears the local storage after check out.
-  clearCart() {
+  clearCartLocalStorage() {
     document.getElementById('checkout-btn').addEventListener('click', () => {
       window.localStorage.clear("cart")
       window.location.reload("cart")
