@@ -259,7 +259,9 @@ checkout(){
         tempItem.amount = tempItem.amount + 1;
         Storage.saveCart(cart);
         this.setCartValues(cart);
+        this.setCartValues(cart);
         this.getCartTotalPrice(cart);
+
         increaseNumber.nextElementSibling.innerText = tempItem.amount;
       }
       //for the reduction of the variant
