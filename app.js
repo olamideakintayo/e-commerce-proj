@@ -22,8 +22,7 @@ const productsDom = document.querySelector(".products-center");
 }
 
 // for the cart
-let tempTotal;
-let itemsTotal;
+
 
 let cart = [];
 
