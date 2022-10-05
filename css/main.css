@@ -924,6 +924,13 @@ body {
   height: 12rem;
 }
 
+@media screen and (max-width: 600px) {
+  .soldout-image {
+    opacity: 0.5;
+    height: 12rem;
+    width: 500px;
+}
+}
 .red-dot{
  width: 10px;
  position: relative;
