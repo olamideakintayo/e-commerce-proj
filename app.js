@@ -19,7 +19,7 @@ const productsDom = document.querySelector(".products-center");
     document.body.style.backgroundColor = "black";
     document.body.style.color = "white";
   }
-} 
+}
 
 // for the cart
 let tempTotal;
@@ -43,7 +43,8 @@ class Products {
         const { id } = item.sys;
         const image = item.fields.image.fields.file.url;
         const soldout = item.fields.soldout;
-        return { title, price, id, image, soldout };
+        const inStock = item.fields.inStock;
+        return { title, price, id, image, soldout, inStock};
       });
       return products;
     } catch (error) {
@@ -60,7 +61,6 @@ class Products {
       products.forEach((product) => {
          //If Statement displaying the Soldout Items
           if(product.soldout == true) {
-          console.log('soldout');
           result += `
           <!-- single product -->
           <article class="product relative">
@@ -86,20 +86,24 @@ class Products {
   
 
         //Else Statement returning the Available Products
-       } else{
+       } else if(product.inStock == true) {
           result += `
           <!-- single product -->
-          <article class="product">
+          <article class="product relative">
             <div id="img-container">
               <img
               src=${product.image}
               id="product-img"
-              class="block " />
+              class="block relative inStock-image" />
               <button class="bag-btn absolute bg-brightRed right-0 border-none uppercase font-bold cursor-pointer text-black" data-id=${product.id}>
-                <i class="fas fa-shopping-cart"></i>
-                add to cart
-              </button>
-            </div>
+              <i class="fas fa-shopping-cart"></i>
+              add to cart
+            </button>
+          </div>
+              <div class="inStock">
+             <img src="./images/green-dot.png" class="green-dot" />
+             Instock
+             </div>
             <h3 class="capitalize text-center">
             ${product.title} 
             </h3>
@@ -128,6 +132,7 @@ class Products {
         if (inCart) {
           button.innerText = "In Cart";
           button.disabled = true;
+
         }
        
         button.addEventListener("click", (event) => {
@@ -143,14 +148,12 @@ class Products {
           this.getCartTotalPrice(cart);
           //Then we display cart items when added to cart
           this.addCartItems(cartItem);
-          //Then we show the cart to see our items added
-          this.showCart();
+          //then we call the event listener that calls the whatsapp function
           this.checkout()
         });
       });
       
     }
-   
 
     //set cart values 
    getCartTotalPrice(cart) {
@@ -160,48 +163,10 @@ class Products {
      tempTotal += item.price * item.amount;
     itemsTotal += item.amount;
       });
-
       cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
       cartItems.innerText = itemsTotal;
  }
-  
- generateWhatsappLink() {
-  let tempTotal = 0; 
-  let itemsTotal = 0;
-  const itemDetails = cart.map(item => {
-  return (tempTotal += item.price * item.amount,
-    itemsTotal += item.amount),
-  [item.amount, item.title, `${'$'+item.price}`].join(" ")
-})
-  console.log(itemDetails)
-  //for the whatsapp checkout link
-  let link = `https://wa.me/+2349032592825?text=I%20will%20like%20to%20place%20an%20order%20of%20`;
-  //for displaying the amount of items and total price in the checkout chat.
-   link += itemDetails + ', ';
-   //to create href attributes to display the link contents and items total price rounded up to 2.
-   document.getElementById("check").href = link + 'Total Price:$' + parseFloat(tempTotal.toFixed(2))
- }
 
-
-checkout(){
-
-  const checkoutButton = document.getElementById('check')
-
-  checkoutButton.addEventListener('click', () => {
-    
-
-    this.generateWhatsappLink();
-
-  })
-  //this.clearCart();
-  }
-
-  // clearCart() {
-  //   document.getElementById('checkout-btn').addEventListener('click', () => {
-  //     window.localStorage.clear("cart")
-  //     window.location.reload("cart")
-  //   })
-  // }
   addCartItems(item) {
     const div = document.createElement("div");
     div.classList.add("cart-item");
@@ -242,7 +207,7 @@ checkout(){
   }
 
   //A method for the cart logic
-  cartLogic() {
+  initCart() {
     cartContent.addEventListener("click", (event) => {
       //For the remove button in the cart
       if (event.target.classList.contains("remove-item")) {
@@ -258,8 +223,6 @@ checkout(){
         let tempItem = cart.find((item) => item.id === id);
         tempItem.amount = tempItem.amount + 1;
         Storage.saveCart(cart);
-        this.setCartValues(cart);
-        this.setCartValues(cart);
         this.getCartTotalPrice(cart);
 
         increaseNumber.nextElementSibling.innerText = tempItem.amount;
@@ -272,7 +235,6 @@ checkout(){
         tempItem.amount = tempItem.amount - 1;
         if (tempItem.amount > 0) {
           Storage.saveCart(cart);
-          this.setCartValues(cart);
           this.getCartTotalPrice(cart);
           lowerAmount.previousElementSibling.innerText = tempItem.amount;
         } else {
@@ -282,20 +244,19 @@ checkout(){
       }
     });
     //For the clear cart  button event
-    //clearCartBtn.addEventListener('click',() => {
-    //this.clearCart();
-    //});
+    clearCartBtn.addEventListener('click',() => {
+      this.clearCart();
+      });
   }
   //For the Clear cart button Functionalities.
-  //clearCart() {
-  //let cartItems = cart.map(item => item.id);
-  //cartItems.forEach(id => this.removeItem(id))
-
-  //while(cartContent.children.length >0) {
-  //  cartContent.removeChild(cartContent.children[0])
-  // }
-  // this.hideCart();
-  //}
+  clearCart() {
+  let cartItems = cart.map(item => item.id);
+  cartItems.forEach(id => this.removeItem(id))
+  while(cartContent.children.length >0) {
+   cartContent.removeChild(cartContent.children[0])
+  };
+  this.hideCart();
+  }
 
   //to remove the items from the cart doing that with their ID.
   removeItem(id) {
@@ -309,13 +270,45 @@ checkout(){
   getSingleButton(id) {
     return buttonsDOM.find((button) => button.dataset.id === id);
   }
-} 
-///local storage checkout.
- 
-//To store it in the local storage.
 
+   //The whatsapp link function that returns the cart order message.
+ WhatsappLinkLogic() {
+  let tempTotal = 0; 
+  let itemsTotal = 0;
+  const itemDetails = cart.map(item => {
+  return (tempTotal += item.price * item.amount,
+    itemsTotal += item.amount),
+  [item.amount, item.title, `${'$'+item.price}`].join(" ")
+})
+  //for the whatsapp checkout link
+  let link = `https://wa.me/+2349032592825?text=I%20will%20like%20to%20place%20an%20order%20of%20`;
+  //for displaying the amount of items and total price in the checkout chat.
+   link += itemDetails + ', ';
+   //to create href attributes to display the link contents and items total price rounded up to 2.
+   document.getElementById("check").href = link + 'Total Price:$' + parseFloat(tempTotal.toFixed(2))
+ }
+
+//the event listener that calls the whatsapp function
+checkout(){
+  const checkoutButton = document.getElementById('check')
+  checkoutButton.addEventListener('click', () => {
+    this.WhatsappLinkLogic();
+  })
+  this.clearCartLocalStorage();
+  }
+
+  ///A function that clears the local storage after check out.
+  clearCartLocalStorage() {
+    document.getElementById('checkout-btn').addEventListener('click', () => {
+      window.localStorage.clear("cart")
+      window.location.reload("cart")
+    })
+  }
+} 
+
+
+//To store it in the local storage.
 class Storage {
-  
   static saveProducts(products) {
     localStorage.setItem("products", JSON.stringify(products));
   }
@@ -334,7 +327,6 @@ class Storage {
   }
 }
 
-
 document.addEventListener("DOMContentLoaded", () => {
   const ui = new UI();
   const products = new Products();
@@ -347,11 +339,11 @@ document.addEventListener("DOMContentLoaded", () => {
     .getProducts()
     .then((products) => {
       ui.displayProducts(products);
-      Storage.saveProducts(products);
+     Storage.saveProducts(products);
     })
     .then(() => {
       ui.getBagButtons();
-      ui.cartLogic();
+      ui.initCart();
     });
 })
 

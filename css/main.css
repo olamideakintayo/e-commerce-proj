@@ -924,9 +924,76 @@ body {
   height: 12rem;
 }
 
+@media screen and (max-width: 600px) {
+  .soldout-image {
+    opacity: 0.5;
+    height: 12rem;
+    width: 500px;
+}
+}
 .red-dot{
  width: 10px;
  position: relative;
  top: 14px;
  left: -35%;
 }
+
+
+/* -------------- End of Soldout Image --------------- */
+
+/* ------------- inStock ---------------------- */
+
+.inStock{
+  position: absolute;
+  left: 44%;
+  font-size: 12px;
+  top: 73.5%;
+}
+
+.inStock-image {
+  height: 12rem;
+}
+
+.green-dot{
+  width: 30px;
+  position: relative;
+  top: 23.5px;
+  left: -65%;
+ }
+
+/* ------------- End of inStock --------------- */
+
+/* ------------ Footer text ------------------- */
+.footer-text{
+   display: flex;
+  font-family: cursive;
+  margin-top: 2em;
+position: absolute;
+margin-left:100px;
+}
+
+@media screen and (min-width: 768px) {
+  .footer-text{
+    display: flex;
+  font-family: cursive;
+  margin-top: 2em;
+position: relative;
+margin-left:43em;
+  }
+}
+/* ------------ End of Footer text ------------------- */
+
+/* ------------ clear cart button ------------------- */
+.clear-cart{
+  position: relative;
+left: 20em;
+bottom: 3.5em;
+letter-spacing: var(--mainSpacing);
+font-size: 0.8rem;
+color: var(--mainBlack);
+border: 1px solid var(--primaryColor);
+border-radius: 6px;
+transition: var(--mainTransition);
+}
+
+/*--------------- End of clear cart button -------------- */
